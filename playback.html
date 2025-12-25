@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta name="referrer" content="no-referrer-when-downgrade" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Playback</title>
+
+<style>
+html,body{
+  margin:0;
+  height:100%;
+  background:#000;
+  overflow:hidden;
+  font-family:sans-serif;
+  color:#fff;
+}
+#ad-b{
+  display:auto;          /* awalnya HIDDEN */
+  position:absolute;
+  width:100%;
+  z-index:40;
+  pointer-events:auto;
+}
+#ad-t{
+  display:auto;
+  position:absolute;
+  top:60px;
+  width:100%;
+  z-index:999;       /* 🔥 WAJIB tinggi */
+  pointer-events:auto;
+}
+#ad-b{ bottom:85px }
+#viewport{
+  position:relative;
+  height:100vh;
+  width:100%;
+}
+video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.overlay{
+  position:absolute;
+  bottom:90px;
+  left:14px;
+}
+.user{font-weight:bold;margin-bottom:6px}
+.caption{font-size:14px}
+.right{
+  position:absolute;
+  right:12px;
+  bottom:110px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+}
+.right img{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  border:2px solid #fff;
+}
+.icon{text-align:center;font-size:13px}
+.swipe{
+  position:absolute;
+  bottom:24px;
+  width:100%;
+  text-align:center;
+  opacity:.8;
+}
+</style>
+</head>
+
+<body>
+<script src="https://petsrulefondness.com/c3/0f/95/c30f95c6ec142ccb4bb31b28081b8c13.js"></script>
+
+<div id="viewport">
+  <video id="video" playsinline autoplay muted></video>
+  <div class="overlay">
+    <div class="user" id="user">@username</div>
+<script>
+  atOptions = {
+    'key' : 'dfff630905c9957df2ae4d66c3f1db55',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://petsrulefondness.com/dfff630905c9957df2ae4d66c3f1db55/invoke.js"></script>
+    <div class="caption" id="caption">🔥 Viral video</div>
+  </div>
+  <div class="right">
+    <img id="avatar">
+    <div class="icon">❤️<span id="like">12K</span></div>
+    <div class="icon">💬<span id="comment">321</span></div>
+  </div>
+  <div class="swipe">⬆ Swipe up for next video</div>
+</div>
+
+<script>
+const videos = JSON.parse(localStorage.getItem("VIDEO_LIST") || "[]");
+let index = parseInt(localStorage.getItem("START_INDEX") || 0);
+
+/* ELEMENT */
+const video = document.getElementById("video");
+const user = document.getElementById("user");
+const avatar = document.getElementById("avatar");
+const like = document.getElementById("like");
+const comment = document.getElementById("comment");
+const caption = document.getElementById("caption");
+
+const adTop = document.getElementById("ad-t");
+const adBottom = document.getElementById("ad-b");
+
+/* RANDOM */
+const captions=[
+  "no words, just ice spice.😍💦",
+  "Her silhouette is insane 👀🙈",
+  "confidence that holds its center",
+  "Looking cute in yellow 💛",
+  "need help with the laundry?",
+  "No way she didn’t care😈 ",
+  "Touching the lines is perfect 👌",
+  "this feels really sincere somehow",
+  "The pink hair really makes her pretty 😍",
+  "However the only reason",
+  "remake with me",
+  "Gen Z can’t breathe without filming it 🙈💱",
+  "Unforgettable bestie moments",
+  "What did I just watch",
+  "I didn’t plan this vibe it happened",
+  "she’s effortlessly beautiful",
+  "Stoppit",
+  "some things are easy to lean into",
+  "are the freckles cute or no",
+  "this clip resurfaces every season",
+  "would you like this in your backseat instead?",
+  "The long rocket pierced my throat",
+  "At this moment, nothing else matters 🙂‍↔️🙂‍↔️",
+  "i’m an unexpected twist",
+  "I am short of words 😳",
+  "Hard work looks so good on you",
+  "The tiny room makes this feel way funnier",
+  "skip the safety manual and come play with me",
+  "Some moments are unforgettable when he’s driving",
+  "hair like that deserves its own show",
+  "the look feels strong",
+  "this feels confidently owned",
+  "beauty that feels intentional 😍"
+];
+function rand(a,b){return Math.floor(Math.random()*(b-a))+a}
+
+/* ===== IKLAN CONTROL ===== */
+let swipeCount = 0;
+let lastSwipeTime = 0;
+let adTimer = null;
+let allowAds = false;
+
+/* tampilkan iklan dengan delay pintar */
+function showAdsSmart(){
+  if(!allowAds) return;
+
+  clearTimeout(adTimer);
+  adTimer = setTimeout(()=>{
+    adTop.style.display="auto";
+    adBottom.style.display="auto";
+  }, 2500); // ⏱️ delay aman 2.5 detik
+}
+
+/* sembunyikan iklan */
+function hideAds(){
+  /* social bar JANGAN di-hide */
+  adBottom.style.display="auto";
+}
+
+/* ===== LOAD VIDEO ===== */
+function loadVideo(i){
+  const v = videos[i];
+  if(!v) return;
+
+  video.src = v.src;
+  video.play();
+
+  user.innerText = v.user;
+  avatar.src = "https://i.pravatar.cc/150?img="+rand(1,70);
+  like.innerText = rand(1,99)+"K";
+  comment.innerText = rand(10,999);
+  caption.innerText = captions[rand(0,captions.length)];
+
+  history.replaceState({}, "", "playback.html?vid="+v.user.replace("@",""));
+
+  swipeCount++;
+
+function showAdsSmart(){
+  if(!allowAds) return;
+
+  clearTimeout(adTimer);
+  adTimer = setTimeout(()=>{
+    /* social bar tampil SEKALI */
+    if(adTop.style.display!=="auto"){
+      adTop.style.display="auto";
+    }
+
+    /* iframe iklan aman */
+    adBottom.style.display="auto";
+  }, 2500);
+}
+}
+
+/* ===== TAP UNMUTE + AKTIFKAN IKLAN ===== */
+document.body.addEventListener("click",()=>{
+  video.muted=false;
+  video.play();
+  allowAds = true; // ✅ user interaction nyata
+},{once:true});
+
+/* ===== SWIPE DETECT ===== */
+let startY=0;
+document.addEventListener("touchstart",e=>{
+  startY = e.touches[0].clientY;
+});
+
+document.addEventListener("touchend",e=>{
+  const endY = e.changedTouches[0].clientY;
+  const now = Date.now();
+  const swipeSpeed = now - lastSwipeTime;
+  lastSwipeTime = now;
+
+  /* kalau swipe cepat → hide iklan */
+  if(swipeSpeed < 500){
+    hideAds();
+  }
+
+  if(startY-endY>60){
+    index=(index+1)%videos.length;
+    loadVideo(index);
+  }
+  if(endY-startY>60){
+    index=(index-1+videos.length)%videos.length;
+    loadVideo(index);
+  }
+});
+
+/* ===== START ===== */
+if(videos.length){
+  loadVideo(index);
+}else{
+  alert("VIDEO_LIST kosong, buka dari index.html");
+}
+</script>
+
+<script src="https://petsrulefondness.com/f9/a8/dd/f9a8dd2f7d8a6dfa74102ceb697548a1.js"></script>
+
+</body>
+</html>
+    <!-- Histats.com  START  (aync)-->
+<script type="text/javascript">var _Hasync= _Hasync|| [];
+_Hasync.push(['Histats.start', '1,4992245,4,511,95,18,00000000']);
+_Hasync.push(['Histats.fasi', '1']);
+_Hasync.push(['Histats.track_hits', '']);
+(function() {
+var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+hs.src = ('//s10.histats.com/js15_as.js');
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+})();</script>
+<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4992245&101" alt="" border="0"></a></noscript>
+<!-- Histats.com  END  -->
