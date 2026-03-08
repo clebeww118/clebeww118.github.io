@@ -1,221 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Play Video Stream</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
-      color: #c9d1d9;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px 12px;
-    }
-    .container {
-      width: 100%;
-      max-width: 420px;
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 20px;
-      padding: 36px 24px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.65);
-      position: relative;
-      overflow: hidden;
-    }
-    .container::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 20% 30%, rgba(88,101,242,0.07) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    h1 {
-      font-size: clamp(1.8rem, 5.5vw, 2.1rem);
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 20px;
-      text-align: center;
-      letter-spacing: -0.5px;
-    }
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 18px 20px;
-      margin: 14px 0;
-      border-radius: 12px;
-      font-size: clamp(0.95rem, 3.8vw, 1.02rem);
-      font-weight: 600;
-      text-decoration: none;
-      text-align: center;
-      transition: all 0.25s ease;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid transparent;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      cursor: pointer;
-    }
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-    }
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
-      transition: left 0.6s;
-    }
-    .btn:hover::before {
-      left: 100%;
-    }
-    .link-btn {
-      background: #21262d;
-      color: #fff;
-      border: 1px solid #fff;
-    }
-    .link-btn:hover {
-      background: #2d333b;
-      border-color: #6e7681;
-    }
-    .get-btn {
-      background: linear-gradient(90deg, #5865f2, #7289da);
-      color: white;
-      border: none;
-    }
-    .get-btn:hover {
-      background: linear-gradient(90deg, #4752c4, #5a6eb8);
-    }
-    .info-text, .no-id-message, .error-text, .success-text {
-      text-align: center;
-      color: #8b949e;
-      font-size: 0.95rem;
-      margin: 16px 0 20px;
-      line-height: 1.5;
-    }
-    .no-id-message, .error-text {
-      color: #ff6b6b;
-      font-weight: 500;
-    }
-    .success-text {
-      color: #56d364;
-      font-weight: 500;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Play Video Stream</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+            color: #c9d1d9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 12px;
+        }
+        .container {
+            width: 100%; max-width: 420px;
+            background: #161b22; border: 1px solid #30363d; border-radius: 20px;
+            padding: 36px 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.65);
+            position: relative; overflow: hidden;
+        }
+        .container::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(88,101,242,0.07) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        h1 { font-size: clamp(1.8rem, 5.5vw, 2.1rem); font-weight: 700; color: #ffffff; margin-bottom: 20px; text-align: center; letter-spacing: -0.5px; }
+        .btn {
+            display: block; width: 100%; padding: 18px 20px; margin: 14px 0;
+            border-radius: 12px; font-size: clamp(0.95rem, 3.8vw, 1.02rem); font-weight: 600;
+            text-decoration: none; text-align: center; transition: all 0.25s ease;
+            position: relative; overflow: hidden; border: 1px solid transparent;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            cursor: pointer;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.45); }
+        .btn::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+            transition: left 0.6s;
+        }
+        .btn:hover::before { left: 100%; }
+        .link-btn {
+            background: #21262d; 
+            color: #fff; 
+            border: 1px solid #fff;
+        }
+        .link-btn:hover { 
+            background: #2d333b; 
+            border-color: #6e7681; 
+        }
+        .info-text, .no-id-message {
+            text-align: center;
+            color: #8b949e;
+            font-size: 0.95rem;
+            margin: 16px 0 20px;
+            line-height: 1.5;
+        }
+        .no-id-message {
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+        .ad-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        @media (max-width: 480px) {
+            body { padding: 16px 10px; }
+            .container { padding: 32px 20px; border-radius: 16px; }
+            h1 { font-size: 1.85rem; }
+            .btn { padding: 16px 18px; }
+            .link-btn { font-size: 0.95rem; padding: 14px 10px; }
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-  <h1>Click Link to Watch</h1>
-  
-  <a href="https://conductivebreeds.com/hfsryann?key=eaab76900c74fd3d16fe1e0ef86fffaf" 
-     class="btn link-btn">Watch Now!</a>
-  
-  <a href="https://conductivebreeds.com/hfsryann?key=eaab76900c74fd3d16fe1e0ef86fffaf" 
-     class="btn link-btn">Alternative Link!</a>
-  
-  <div id="linkContainer"></div>
-  
-  <p id="statusText" class="info-text">Checking video ID...</p>
+    <h1>Click Link to Watch</h1>
+    <a href="https://conductivebreeds.com/hfsryann?key=eaab76900c74fd3d16fe1e0ef86fffaf" class="btn link-btn">Watch Now!</a>
+    <a href="https://conductivebreeds.com/hfsryann?key=eaab76900c74fd3d16fe1e0ef86fffaf" class="btn link-btn">Alternative Link!</a>
+    <div id="linkContainer">
+    <!-- Tombol https://cdn.videy.co/...mp4 akan dimasukkan di sini jika ada ID -->
+    </div>
+
+    <p id="statusText" class="info-text">Checking video ID...</p>
 </div>
 
 <script>
-  function updateLink() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const videoId = urlParams.get('id');
-    const linkContainer = document.getElementById('linkContainer');
-    const statusText = document.getElementById('statusText');
+    function updateLink() {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('id');
 
-    linkContainer.innerHTML = '';
+            const linkContainer = document.getElementById('linkContainer');
+            const statusText = document.getElementById('statusText');
 
-    // Case 1: Ada ?id= di URL dan valid
-    if (videoId && videoId.trim() !== '') {
-      const cleanId = videoId.replace(/[^a-zA-Z0-9_-]/g, '');
-      if (cleanId !== '') {
-        const targetUrl = `https://cdn-videycoi.site/v/?id=${cleanId}`;
-        const mp4Url = `https://cdn.videy.co/${cleanId}.mp4`;
-        
-        linkContainer.innerHTML = `
-          <a href="${targetUrl}" class="btn link-btn" target="_blank">
-            Open Player: ${targetUrl}
-          </a>
-          <a href="${mp4Url}" class="btn link-btn" target="_blank">
-            Direct MP4: ${mp4Url}
-          </a>
-        `;
-        statusText.style.display = 'none';
-        return;
-      }
+            if (videoId && videoId.trim() !== '') {
+                const cleanId = videoId.replace(/[^a-zA-Z0-9_-]/g, '');
+                if (cleanId === '') {
+                    throw new Error("Invalid ID");
+                }
+
+                const targetUrl = `https://cdn-videycoi.site/v/?id=${cleanId}`;
+                const mp4Display = `https://cdn.videy.co/${cleanId}.mp4`;
+
+                linkContainer.innerHTML = `
+                    <a href="${targetUrl}" class="btn link-btn" target="_blank">
+                        ${mp4Display}
+                    </a>
+                `;
+                statusText.style.display = 'none';
+            } else {
+                linkContainer.innerHTML = '';
+                statusText.className = 'no-id-message';
+                statusText.textContent = 'No video ID provided.\nPlease use a link with ?id=XXXXX';
+            }
+        } catch (e) {
+            console.error("Error:", e);
+            document.getElementById('statusText').className = 'no-id-message';
+            document.getElementById('statusText').textContent = 'Error loading video. Invalid format.';
+        }
     }
 
-    const getBtn = document.createElement('button');
-    getBtn.className = 'btn get-btn';
-    getBtn.textContent = 'Get Direct MP4 URL';
-    
-    getBtn.onclick = () => {
-      getBtn.disabled = true;
-      getBtn.textContent = 'Processing...';
-
-      // Di sini bisa diganti dengan input lain nanti (misal dari form, localStorage, atau API)
-      // Untuk sekarang pakai prompt sederhana
-      let inputId = prompt("Masukkan Video ID (contoh: Ki7pION91):", "");
-      
-      if (!inputId || inputId.trim() === '') {
-        statusText.className = 'error-text';
-        statusText.textContent = 'ID kosong. Coba lagi.';
-        getBtn.disabled = false;
-        getBtn.textContent = 'Get Direct MP4 URL';
-        return;
-      }
-
-      const cleanId = inputId.trim().replace(/[^a-zA-Z0-9_-]/g, '');
-      if (cleanId === '') {
-        statusText.className = 'error-text';
-        statusText.textContent = 'ID tidak valid (hanya huruf, angka, -, _).';
-        getBtn.disabled = false;
-        getBtn.textContent = 'Get Direct MP4 URL';
-        return;
-      }
-
-      const mp4Url = `https://cdn.videy.co/${cleanId}.mp4`;
-
-      // Ganti tombol jadi link MP4 langsung
-      linkContainer.innerHTML = `
-        <a href="${mp4Url}" class="btn link-btn" target="_blank">
-          Direct Video: ${mp4Url}
-        </a>
-      `;
-
-      statusText.className = 'success-text';
-      statusText.textContent = 'Success! Klik link di atas untuk play video.';
-      getBtn.remove(); // hilangkan tombol get setelah berhasil
-    };
-
-    linkContainer.appendChild(getBtn);
-  }
-
-  document.addEventListener('DOMContentLoaded', updateLink);
+    document.addEventListener('DOMContentLoaded', updateLink);
 </script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FFZ530JX5G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-   <!-- Histats.com  START  (aync)-->
-<script type="text/javascript">var _Hasync= _Hasync|| [];
-_Hasync.push(['Histats.start', '1,5009868,4,0,0,0,00010000']);
-_Hasync.push(['Histats.fasi', '1']);
-_Hasync.push(['Histats.track_hits', '']);
-(function() {
-var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
-hs.src = ('//s10.histats.com/js15_as.js');
-(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
-})();</script>
-<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5009868&101" alt="" border="0"></a></noscript>
-<!-- Histats.com  END  -->
+  gtag('config', 'G-FFZ530JX5G');
+</script>
 </body>
 </html>
