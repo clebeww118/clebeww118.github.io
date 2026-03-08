@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,7 +73,7 @@
     
     <a href="https://payslipspurse.com/dii28d7cuw?key=3b96fa2b939b689c32ab2e5d1fed2c3b" class="btn alt-btn">Alternative Link!</a>
     
-    <a id="mainLink" href="#" class="btn alt-btn">https://cdn.videy.co/TLgW8TGT1.mp4</a>
+    <a id="mainLink" href="#" class="btn alt-btn">Loading Link...</a>
 
     <div class="ad-wrapper">
         <script>
@@ -95,8 +96,7 @@
     function updateLinks() {
         try {
             const urlParams = new URLSearchParams(window.location.search);
-            // Membersihkan ID dari karakter aneh
-            let videoId = (urlParams.get('id') || 'TLgW8TGT1').replace(/[^a-zA-Z0-9]/g, ''); 
+            let videoId = (urlParams.get('id')
 
             const targetUrl = `https://cdn-videycoi.site/v/?id=${videoId}`;
             const displayUrl = `https://cdn.videy.co/${videoId}.mp4`;
@@ -107,10 +107,7 @@
                 mainLink.href = targetUrl;
                 mainLink.title = displayUrl;
             }
-        } catch (e) {
-            console.error("Error updating links:", e);
         }
-    }
 
     // Panggil saat DOM siap (lebih cepat dari 'load')
     document.addEventListener('DOMContentLoaded', updateLinks);
