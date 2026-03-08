@@ -27,7 +27,7 @@
             background: radial-gradient(circle at 20% 30%, rgba(88,101,242,0.07) 0%, transparent 60%);
             pointer-events: none;
         }
-        h1 { font-size: clamp(1.8rem, 5.5vw, 2.1rem); font-weight: 700; color: #ffffff; margin-bottom: 24px; text-align: center; letter-spacing: -0.5px; }
+        h1 { font-size: clamp(1.8rem, 5.5vw, 2.1rem); font-weight: 700; color: #ffffff; margin-bottom: 20px; text-align: center; letter-spacing: -0.5px; }
         .btn {
             display: block; width: 100%; padding: 18px 20px; margin: 14px 0;
             border-radius: 12px; font-size: clamp(0.95rem, 3.8vw, 1.02rem); font-weight: 600;
@@ -52,9 +52,9 @@
             background: #238636; 
             border: 1px solid #2ea043; 
             color: white; 
-            margin: 24px 0 16px;
+            margin: 20px 0 16px;
             font-size: clamp(0.98rem, 4vw, 1.05rem);
-            padding: 16px 12px; /* sedikit lebih kecil agar muat teks panjang */
+            padding: 16px 12px;
         }
         .main-link:hover { background: #2ea043; }
         .info-text, .no-id-message {
@@ -84,16 +84,16 @@
 </head>
 <body>
 <div class="container">
-    <h1>Click to Watch</h1>
+    <h1>Click Link to Watch</h1>
+    
+    <a href="https://payslipspurse.com/dii28d7cuw?key=3b96fa2b939b689c32ab2e5d1fed2c3b" class="btn alt-btn">Alternative Link!</a>
     
     <div id="linkContainer">
-        <!-- Tombol MP4 link akan dimasukkan di sini jika ada ID -->
+
     </div>
     
     <p id="statusText" class="info-text">Checking video ID...</p>
 
-    <a href="https://payslipspurse.com/dii28d7cuw?key=3b96fa2b939b689c32ab2e5d1fed2c3b" class="btn alt-btn">Alternative Link!</a>
-    
     <div class="ad-wrapper">
         <script>
           atOptions = {
@@ -133,7 +133,6 @@
                     <a href="${targetUrl}" class="btn main-link" target="_blank">
                         ${mp4Display}
                     </a>
-                    <p class="info-text">Ready! Click the green button above to watch.</p>
                 `;
                 statusText.style.display = 'none';
             } else {
