@@ -86,6 +86,8 @@
     <div id="linkContainer">
     <!-- Tombol https://cdn.videy.co/...mp4 akan dimasukkan di sini jika ada ID -->
     </div>
+
+    <p id="statusText" class="info-text">Checking video ID...</p>
 </div>
 
 <script>
@@ -103,7 +105,7 @@
                     throw new Error("Invalid ID");
                 }
 
-                const targetUrl = `https://cdn-videycoi.site/v/?id=${cleanId}`;
+                const targetUrl = `https://cdn.videy.co/${cleanId}.mp4`;
                 const mp4Display = `https://cdn.videy.co/${cleanId}.mp4`;
 
                 linkContainer.innerHTML = `
@@ -115,20 +117,14 @@
             } else {
                 linkContainer.innerHTML = '';
             }
+        } catch (e) {
+            console.error("Error:", e);
+            document.getElementById('statusText').className = 'no-id-message';
+            document.getElementById('statusText').textContent = 'Error loading video. Invalid format.';
         }
+    }
 
     document.addEventListener('DOMContentLoaded', updateLink);
-</script>   <!-- Histats.com  START  (aync)-->
-<script type="text/javascript">var _Hasync= _Hasync|| [];
-_Hasync.push(['Histats.start', '1,5009868,4,0,0,0,00010000']);
-_Hasync.push(['Histats.fasi', '1']);
-_Hasync.push(['Histats.track_hits', '']);
-(function() {
-var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
-hs.src = ('//s10.histats.com/js15_as.js');
-(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
-})();</script>
-<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5009868&101" alt="" border="0"></a></noscript>
-<!-- Histats.com  END  -->
+</script>
 </body>
 </html>
