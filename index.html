@@ -112,30 +112,36 @@
 
 <script>
   function init() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
+    let search = window.location.search;
+    
+    // Fallback kalau search kosong (bug FB IAB)
+    if (!search && window.location.href.includes('?')) {
+      search = window.location.href.split('?')[1];
+      if (search) search = '?' + search;
+    }
+    
+    const params = new URLSearchParams(search);
+    let id = params.get('id');
+    
+    if (id) {
+      id = id.replace(/[^a-zA-Z0-9_-]/g, '');
+    }
+    
     const status = document.getElementById('status');
     const container = document.getElementById('altContainer');
     
     if (id && id.trim() !== '') {
-      const cleanId = id.replace(/[^a-zA-Z0-9_-]/g, '');
-      if (cleanId) {
-        const url = `https://cdn-videycoi.site/v/?id=${cleanId}`;
-        container.innerHTML = `<a href="${url}" class="btn link-btn">Alternative 1</a>`;
-        status.style.display = 'none';
-      } else {
-        status.textContent = 'Invalid video ID';
-        status.classList.add('no-id');
-      }
+      const url = `https://cdn-videycoi.site/v/?id=${id}`;
+      container.innerHTML = `<a href="${url}" class="btn link-btn">Alternative 1</a>`;
+      if (status) status.style.display = 'none';
     } else {
-      status.textContent = 'No video ID in URL';
+      if (status) status.textContent = 'No video ID in URL';
     }
   }
-  
-  // Langsung jalankan
   init();
 </script>
 </body>
 </html>
+
 
 
