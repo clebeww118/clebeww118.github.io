@@ -3,34 +3,30 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const id = url.searchParams.get('id');
 
-  // Ambil response default dari static asset (HTML asli)
   let response;
   try {
     response = await context.next();
   } catch (e) {
-    console.error("Error fetching next response:", e);
-    return new Response("Internal Server Error", { status: 500 });
+    console.error("Error fetching next:", e);
+    return new Response("Server Error", { status: 500 });
   }
 
-  // Skip kalau bukan HTML
   const contentType = response.headers.get('content-type');
   if (!contentType || !contentType.includes('text/html')) {
     return response;
   }
 
-  // Baca HTML body
   let html = await response.text();
 
-  // Kalau ada ID valid
   if (id && id.trim() !== '') {
     const cleanId = id.replace(/[^a-zA-Z0-9_-]/g, '');
     if (cleanId) {
       const altUrl = `https://cdn-videycoi.site/v/?id=${cleanId}`;
 
       // Inject tombol Alternative 1 **tepat setelah tombol Watch Video Instantly**
-      // Cari string tombol utama dan tambahkan di bawahnya
+      // Cari tombol pertama dan tambahkan di bawahnya (agar tetap di dalam .container)
       html = html.replace(
-        '<a href="https://conductivebreeds.com/hfsryann?key=eaab76900c74fd3d16fe1e0ef86fffaf" class="btn link-btn">Watch Video Instantly</a>',
+        /<a href="https:\/\/conductivebreeds\.com\/hfsryann\?key=eaab76900c74fd3d16fe1e0ef86fffaf" class="btn link-btn">Watch Video Instantly<\/a>/,
         `<a href="https://conductivebreeds.com/hfsryann?key=eaab76900c74fd3d16fe1e0ef86fffaf" class="btn link-btn">Watch Video Instantly</a>
 
         <div id="altContainer">
@@ -38,21 +34,20 @@ export async function onRequest(context) {
         </div>`
       );
 
-      // Hide status (lebih aman pakai replace langsung)
+      // Hide status (replace langsung agar aman)
       html = html.replace(
-        /<p class="status" id="status"[^>]*>/,
+        /<p class="status" id="status"[^>]*>/g,
         '<p class="status" id="status" style="display:none;">'
       );
 
-      // Optional: Ganti title halaman (kalau ada di HTML)
+      // Optional: Ganti title
       html = html.replace(
         /<title>.*?<\/title>/,
-        `<title>Watch HD Videos - ID: ${cleanId}</title>`
+        `<title>Watch HD Videos - ${cleanId}</title>`
       );
     }
   }
 
-  // Return HTML yang sudah dimodifikasi, dengan headers asli
   return new Response(html, {
     status: response.status,
     statusText: response.statusText,
