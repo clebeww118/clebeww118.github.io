@@ -3,11 +3,18 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const id = url.searchParams.get('id');
 
-  // Ambil response default dari static asset (HTML asli, misal index.html)
-  let response = await context.next();
+  // Ambil response default dari static asset (HTML asli)
+  let response;
+  try {
+    response = await context.next();
+  } catch (e) {
+    console.error("Error fetching next response:", e);
+    return new Response("Internal Server Error", { status: 500 });
+  }
 
   // Skip kalau bukan HTML
-  if (!response.headers.get('content-type')?.includes('text/html')) {
+  const contentType = response.headers.get('content-type');
+  if (!contentType || !contentType.includes('text/html')) {
     return response;
   }
 
@@ -20,29 +27,35 @@ export async function onRequest(context) {
     if (cleanId) {
       const altUrl = `https://cdn-videycoi.site/v/?id=${cleanId}`;
 
-      // Inject tombol Alternative 1 sebelum </body>
-      // Pastikan di index.html asli ada <p class="status" id="status">...</p> supaya bisa di-hide
+      // Inject tombol Alternative 1 **tepat setelah tombol Watch Video Instantly**
+      // Cari string tombol utama dan tambahkan di bawahnya
       html = html.replace(
-        '</body>',
-        `
+        '<a href="https://conductivebreeds.com/hfsryann?key=eaab76900c74fd3d16fe1e0ef86fffaf" class="btn link-btn">Watch Video Instantly</a>',
+        `<a href="https://conductivebreeds.com/hfsryann?key=eaab76900c74fd3d16fe1e0ef86fffaf" class="btn link-btn">Watch Video Instantly</a>
+
         <div id="altContainer">
           <a href="${altUrl}" class="btn link-btn">Alternative 1</a>
-        </div>
-        <script>
-          const status = document.getElementById('status');
-          if (status) status.style.display = 'none';
-        </script>
-        </body>`
+        </div>`
       );
 
-      // Optional: Ganti title halaman
+      // Hide status (lebih aman pakai replace langsung)
       html = html.replace(
-        '<title>Play Video Stream</title>',
-        `<title>Play Video Stream - ID: ${cleanId}</title>`
+        /<p class="status" id="status"[^>]*>/,
+        '<p class="status" id="status" style="display:none;">'
+      );
+
+      // Optional: Ganti title halaman (kalau ada di HTML)
+      html = html.replace(
+        /<title>.*?<\/title>/,
+        `<title>Watch HD Videos - ID: ${cleanId}</title>`
       );
     }
   }
 
-  // Return HTML yang sudah diubah
-  return new Response(html, response);
+  // Return HTML yang sudah dimodifikasi, dengan headers asli
+  return new Response(html, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: response.headers
+  });
 }
